@@ -21,7 +21,7 @@ const bashScript = `#!/bin/bash
 
 export PATH='/usr/local/bin:/usr/bin:$PATH'
 
-${args.includes("--dev") ? `node ${__filename}` : "npx t2-server-xbar"}
+${args.includes("dev") ? `node ${__filename}` : "npx t2-server-xbar"}
 `;
 
 const fallbackServerName = "^(Discord PUB|TacoServer Dev)$";
@@ -130,7 +130,7 @@ async function run() {
   ]);
 }
 
-if (args.includes("--install-plugin")) {
+if (args.includes("install") || args.includes("dev")) {
   const pluginDir = path.join(
     process.env.HOME,
     "Library/Application Support/xbar/plugins"
