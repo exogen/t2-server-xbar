@@ -19,7 +19,7 @@ const bashScript = `#!/bin/bash
 
 #  <xbar.var>string(VAR_SERVER_NAME="Discord PUB"): Server name to match (regular expression).</xbar.var>
 
-export PATH='/usr/local/bin:/usr/bin:$PATH'
+export PATH='/usr/local/bin:/usr/bin:/bin:$PATH'
 
 ${args.includes("dev") ? `node ${__filename}` : "npx t2-server-xbar"}
 `;
