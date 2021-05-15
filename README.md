@@ -25,7 +25,7 @@ clone this repo, then run:
 
 ```console
 $ yarn
-$ node src/index.js dev
+$ yarn run dev
 ```
 
 The plugin script will point to your working copy rather than the published
