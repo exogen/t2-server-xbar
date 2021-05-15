@@ -30,3 +30,21 @@ $ yarn run dev
 
 The plugin script will point to your working copy rather than the published
 package.
+
+## Options
+
+To set options, select **xbar** ▸ **Open plugin…** from the menu.
+
+#### Server name
+
+A regular expression (case sensitive) to select the server shown.
+
+#### Show team list as
+
+Teams can be shown in two ways: `table` mode or `submenu` mode.
+
+## Updating
+
+Since the plugin uses `npx` to run the `t2-server-xbar` script from npm, it should stay up to date automatically.
+
+However, if new options are added, you may need to run the install command (above) again for them to show up.
