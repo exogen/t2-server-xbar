@@ -28,4 +28,5 @@ $ yarn
 $ node src/index.js dev
 ```
 
-The plugin script will be symlinked to your working copy.
+The plugin script will point to your working copy rather than the published
+package.
