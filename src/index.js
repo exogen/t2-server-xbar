@@ -85,6 +85,11 @@ const icon = {
   trim: false,
 };
 
+// xbar has no escaping mechanism, so replace special characters.
+function sanitizeName(name) {
+  return name.replace(/[|]/g, "│");
+}
+
 async function run() {
   const date = new Date();
   let server;
@@ -99,7 +104,7 @@ async function run() {
   const teams = server.gameTeams.map((team) => ({
     text: team.name || "Players",
     submenu: team.players.map((player) => ({
-      text: player.name,
+      text: sanitizeName(player.name),
     })),
   }));
 
@@ -107,7 +112,7 @@ async function run() {
     teams.push({
       text: "Observer",
       submenu: server.observerTeam.players.map((player) => ({
-        text: player.name,
+        text: sanitizeName(player.name),
       })),
     });
   }
