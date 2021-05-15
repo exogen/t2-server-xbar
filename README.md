@@ -2,9 +2,7 @@
 
 macOS xbar plugin for showing Tribes 2 server status.
 
-<p align="center">
 <img src="screenshot.png" alt="Screenshot" width="430" height="250">
-</p>
 
 ## Install
 
