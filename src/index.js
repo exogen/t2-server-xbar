@@ -6,6 +6,9 @@ const got = require("got");
 const entities = require("entities");
 
 const args = process.argv.slice(2);
+const command = args[0];
+const scriptContent =
+  command === "dev" ? `node "${__filename}"` : "npx t2-server-xbar";
 
 const bashScript = `#!/bin/bash
 
@@ -18,10 +21,11 @@ const bashScript = `#!/bin/bash
 #  <xbar.abouturl>https://github.com/exogen/t2-server-xbar</xbar.abouturl>
 
 #  <xbar.var>string(VAR_SERVER_NAME="Discord PUB"): Server name to match (regular expression).</xbar.var>
+#  <xbar.var>select(VAR_SHOW_TEAM_LIST_AS="table"): How to display the teams. [table, submenu]</xbar.var>
 
 export PATH='/usr/local/bin:/usr/bin:/bin:$PATH'
 
-${args.includes("dev") ? `node ${__filename}` : "npx t2-server-xbar"}
+${scriptContent}
 `;
 
 const fallbackServerName = "^(Discord PUB|TacoServer Dev)$";
@@ -91,7 +95,11 @@ function sanitizeName(name) {
 }
 
 async function run() {
-  const date = new Date();
+  const isDarkMode = process.env.XBARDarkMode === "true";
+  const teamListStyle = process.env.VAR_SHOW_TEAM_LIST_AS || "table";
+  const normalColor = isDarkMode ? "#aaaaaa" : "#666666";
+  const playerColor = "#888888";
+
   let server;
   try {
     server = await fetchServerStatus();
@@ -101,20 +109,88 @@ async function run() {
     return;
   }
 
-  const teams = server.gameTeams.map((team) => ({
-    text: team.name || "Players",
-    submenu: team.players.map((player) => ({
-      text: sanitizeName(player.name),
-    })),
-  }));
+  const lines = [];
 
-  if (server.observerCount) {
-    teams.push({
-      text: "Observer",
-      submenu: server.observerTeam.players.map((player) => ({
-        text: sanitizeName(player.name),
-      })),
-    });
+  if (teamListStyle === "submenu") {
+    lines.push(
+      ...server.gameTeams.map((team) => ({
+        text: team.name || "Players",
+        submenu: team.players.map((player) => ({
+          text: sanitizeName(player.name),
+          color: playerColor,
+        })),
+      }))
+    );
+
+    if (server.observerCount) {
+      lines.push({
+        text: "Observer",
+        submenu: server.observerTeam.players.map((player) => ({
+          text: sanitizeName(player.name),
+          color: playerColor,
+        })),
+      });
+    }
+  } else {
+    if (server.rows.length) {
+      const columnWidths = server.gameTeams.map((team) =>
+        Math.max(...team.players.map((player) => player.name.length))
+      );
+      lines.push(
+        bitbar.separator,
+        {
+          text: server.gameTeams
+            .map((team, i) => (team.name || "Players").padEnd(columnWidths[i]))
+            .join("   "),
+          font: "Menlo",
+          color: normalColor,
+          size: 11,
+        },
+        bitbar.separator
+      );
+      lines.push(
+        ...server.rows.map((row) => ({
+          text: row
+            .map((player, i) =>
+              (player ? sanitizeName(player.name) : "").padEnd(columnWidths[i])
+            )
+            .join("   "),
+          font: "Menlo",
+          color: playerColor,
+          trim: false,
+          size: 11,
+        }))
+      );
+    }
+    if (server.observerCount) {
+      lines.push(
+        bitbar.separator,
+        {
+          text: "Observer",
+          font: "Menlo Bold",
+          color: normalColor,
+          size: 11,
+        },
+        bitbar.separator
+      );
+      lines.push(
+        ...server.observerTeam.players.map((player) => ({
+          text: sanitizeName(player.name),
+          font: "Menlo",
+          color: playerColor,
+          size: 11,
+        }))
+      );
+    }
+  }
+
+  const playerCountLine = {
+    text: `${server.playerCount || "No"} ${
+      server.playerCount === 1 ? "player" : "players"
+    } online`,
+  };
+  if (server.playerCount > 0) {
+    playerCountLine.color = normalColor;
   }
 
   bitbar([
@@ -125,17 +201,14 @@ async function run() {
     bitbar.separator,
     {
       text: `${server.map} (${server.mapType})`,
+      color: normalColor,
     },
-    {
-      text: `${server.playerCount || "No"} ${
-        server.playerCount === 1 ? "player" : "players"
-      } online`,
-    },
-    ...teams,
+    playerCountLine,
+    ...lines,
   ]);
 }
 
-if (args.includes("install") || args.includes("dev")) {
+if (command === "install" || command === "dev") {
   const pluginDir = path.join(
     process.env.HOME,
     "Library/Application Support/xbar/plugins"
