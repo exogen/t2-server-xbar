@@ -2,6 +2,8 @@
 
 macOS xbar plugin for showing Tribes 2 server status.
 
+![Screenshot](screenshot.png)
+
 ## Install
 
 First, install [xbar](https://xbarapp.com).
