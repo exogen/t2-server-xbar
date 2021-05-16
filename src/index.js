@@ -141,7 +141,7 @@ async function run() {
         {
           text: server.gameTeams
             .map((team, i) => (team.name || "Players").padEnd(columnWidths[i]))
-            .join("   "),
+            .join("    "),
           font: "Menlo",
           color: normalColor,
           size: 11,
@@ -154,7 +154,7 @@ async function run() {
             .map((player, i) =>
               (player ? sanitizeName(player.name) : "").padEnd(columnWidths[i])
             )
-            .join("   "),
+            .join("    "),
           font: "Menlo",
           color: playerColor,
           trim: false,
@@ -167,7 +167,7 @@ async function run() {
         bitbar.separator,
         {
           text: "Observer",
-          font: "Menlo Bold",
+          font: "Menlo",
           color: normalColor,
           size: 11,
         },

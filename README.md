@@ -41,7 +41,12 @@ A regular expression (case sensitive) to select the server shown.
 
 #### Show team list as
 
-Teams can be shown in two ways: `table` mode or `submenu` mode.
+Teams can be shown in two ways: `table` mode or `submenu` mode. Submenu mode
+can be seen above, while table mode looks like:
+
+<img src="screenshot-table.png" alt="Table mode screenshot" width="290">
+
+As of v1.1.0, table mode is the default.
 
 ## Updating
 
