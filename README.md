@@ -51,7 +51,7 @@ To set options, select **xbar** ▸ **Open plugin…** from the menu.
 
 #### Server name
 
-A regular expression (case sensitive) to select the server shown.
+A regular expression (case sensitive) to select the server to query.
 
 #### Display mode
 
