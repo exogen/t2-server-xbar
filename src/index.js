@@ -238,7 +238,7 @@ async function drawImage(server) {
       font "/System/Library/Fonts/HelveticaNeue.ttc" font-size 13 gravity North
       fill #81fff3 stroke none
       text 34,28 "${sanitizeDrawText(server.map)}"
-      fill #79d5b6 font-size 10
+      fill #6ec6a8 font-size 10
       text 34,64 "${sanitizeDrawText(server.mapType)}"
       ${playerString}
       `,
