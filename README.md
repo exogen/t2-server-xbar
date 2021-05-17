@@ -26,7 +26,7 @@ To enable image display mode (seen above), you must have ImageMagick installed:
 $ brew install imagemagick
 ```
 
-## Develop
+## Development
 
 If you’d like to develop this plugin and run it directly from a git checkout,
 clone this repo, then run:
