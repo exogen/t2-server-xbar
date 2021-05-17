@@ -157,9 +157,9 @@ async function drawImage(server) {
     let observerPosition = verticalPosition + 20 + rows.length * 36;
     draw.push(
       "fill #24ff8a font-size 13 gravity NorthWest",
-      `text ${leftColumn},${observerPosition} "Observer"`
+      `text ${leftColumn},${observerPosition} "Observers"`
     );
-    observerPosition += 46;
+    observerPosition += 44;
     draw.push("fill #d6fff5 font-size 12 gravity NorthWest");
     for (let i = 0; i < observerRowCount; i++) {
       const left = server.observerTeam.players[teamCount * i];
@@ -232,7 +232,7 @@ async function drawImage(server) {
       fill #0c3b3a stroke #2ae8bf stroke-width 2
       roundRectangle 72,2 796,${height - 4} 8,8
       stroke #2e6b66j
-      line 78,110 790,110
+      line 80,110 788,110
       font "/System/Library/Fonts/HelveticaNeue.ttc" font-size 13 gravity North
       fill #81fff3 stroke none
       text 34,28 "${sanitizeDrawText(server.map)}"
@@ -315,7 +315,7 @@ async function run() {
 
     if (server.observerCount) {
       lines.push({
-        text: "Observer",
+        text: "Observers",
         submenu: server.observerTeam.players.map((player) => ({
           text: sanitizeName(player.name),
           color: playerColor,
@@ -332,7 +332,10 @@ async function run() {
     );
     if (server.rows.length) {
       const columnWidths = server.gameTeams.map((team) =>
-        Math.max(...team.players.map((player) => player.name.length))
+        Math.max(
+          (team.name || "Players").length,
+          ...team.players.map((player) => player.name.length)
+        )
       );
       lines.push(
         bitbar.separator,
@@ -364,7 +367,7 @@ async function run() {
       lines.push(
         bitbar.separator,
         {
-          text: "Observer",
+          text: "Observers",
           font: "Menlo",
           color: normalColor,
           size: 11,
