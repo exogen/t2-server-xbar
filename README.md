@@ -6,7 +6,7 @@
 
 macOS xbar plugin for showing Tribes 2 server status.
 
-<img src="screenshot.png" alt="Screenshot" width="430">
+<img src="screenshot.png" alt="Screenshot" width="560">
 
 </div>
 
@@ -20,6 +20,14 @@ Then run:
 $ npx t2-server-xbar install
 ```
 
+To enable image display mode (seen above), you must have ImageMagick installed:
+
+```console
+$ brew install imagemagick
+```
+
+## Develop
+
 If you’d like to develop this plugin and run it directly from a git checkout,
 clone this repo, then run:
 
@@ -31,6 +39,12 @@ $ yarn run dev
 The plugin script will point to your working copy rather than the published
 package.
 
+## Updating
+
+Since the plugin uses `npx` to run the `t2-server-xbar` script from npm, it should stay up to date automatically.
+
+However, if new options are added, you may need to re-run the install command (above) for them to show up.
+
 ## Options
 
 To set options, select **xbar** ▸ **Open plugin…** from the menu.
@@ -39,17 +53,21 @@ To set options, select **xbar** ▸ **Open plugin…** from the menu.
 
 A regular expression (case sensitive) to select the server shown.
 
-#### Show team list as
+#### Display mode
 
-Teams can be shown in two ways: `table` mode or `submenu` mode. Submenu mode
-can be seen above, while table mode looks like:
+Server info can be shown in three ways: `image`, `table`, or `submenu` mode.
+Image mode is the default (seen above) and requires ImageMagick to be installed.
 
+Table mode looks like:
+
+<p align="center">
 <img src="screenshot-table.png" alt="Table mode screenshot" width="290">
+</p>
 
-As of v1.1.0, table mode is the default.
+Submenu mode looks like:
 
-## Updating
+<p align="center">
+<img src="screenshot-submenu.png" alt="Submenu mode screenshot" width="430">
+</p>
 
-Since the plugin uses `npx` to run the `t2-server-xbar` script from npm, it should stay up to date automatically.
-
-However, if new options are added, you may need to run the install command (above) again for them to show up.
+As of v2.0.0, image mode is the default.
