@@ -189,7 +189,7 @@ async function drawImage(server) {
       height = 178;
     }
   } else {
-    height = 120;
+    height = 300;
   }
   height += rows.length * 36;
   if (observerRowCount) {
@@ -212,8 +212,8 @@ async function drawImage(server) {
     playerString += draw.join("\n");
   } else {
     playerString += `
-      fill #62cb94 font-size 12 gravity North
-      text 34,192 "No players online."
+      fill #76b8a7 font-size 12 gravity North
+      text 34,184 "No players online."
     `;
   }
 
@@ -231,8 +231,10 @@ async function drawImage(server) {
       `
       fill #0c3b3a stroke #2ae8bf stroke-width 2
       roundRectangle 72,2 796,${height - 4} 8,8
+      fill #02312b stroke none
+      roundRectangle 74,4 794,110 4,4
       stroke #2e6b66j
-      line 80,110 788,110
+      line 75,110 793,110
       font "/System/Library/Fonts/HelveticaNeue.ttc" font-size 13 gravity North
       fill #81fff3 stroke none
       text 34,28 "${sanitizeDrawText(server.map)}"
@@ -268,15 +270,6 @@ async function run() {
 
   const lines = [];
 
-  const playerCountLine = {
-    text: `${server.playerCount || "No"} ${
-      server.playerCount === 1 ? "player" : "players"
-    } online`,
-  };
-  if (server.playerCount > 0) {
-    playerCountLine.color = normalColor;
-  }
-
   if (displayMode === "image") {
     try {
       const image = await drawImage(server);
@@ -293,6 +286,15 @@ async function run() {
         throw err;
       }
     }
+  }
+
+  const playerCountLine = {
+    text: `${server.playerCount || "No"} ${
+      server.playerCount === 1 ? "player" : "players"
+    } online`,
+  };
+  if (server.playerCount > 0) {
+    playerCountLine.color = normalColor;
   }
 
   if (displayMode === "submenu") {
