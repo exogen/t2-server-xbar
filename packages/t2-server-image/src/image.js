@@ -96,7 +96,9 @@ function drawImage(server) {
     if (rightTeam && rightTeam.name) {
       ctx.fillText(rightTeam.name, rightColumn, bodyTop);
     }
-    ctx.fillText("Observers", leftColumn, observersTop);
+    if (server.observerCount > 0) {
+      ctx.fillText("Observers", leftColumn, observersTop);
+    }
 
     ctx.textAlign = "right";
     ctx.font = "22px SF Pro";

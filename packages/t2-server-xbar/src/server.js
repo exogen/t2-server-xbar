@@ -37,15 +37,6 @@ async function fetchServerStatus(regexString = defaultServerName) {
     0
   );
   const observerCount = observerTeam ? observerTeam.players.length : 0;
-  const rowCount = Math.max(0, ...gameTeams.map((team) => team.players.length));
-  const rows = new Array(rowCount);
-
-  for (let i = 0; i < rowCount; i++) {
-    rows[i] = [];
-    gameTeams.forEach((team, j) => {
-      rows[i][j] = team.players[i];
-    });
-  }
 
   return {
     map: entities.decodeHTML(server.info_map),
@@ -54,8 +45,6 @@ async function fetchServerStatus(regexString = defaultServerName) {
     playerCount,
     observerTeam,
     gameTeams,
-    rowCount,
-    rows,
   };
 }
 

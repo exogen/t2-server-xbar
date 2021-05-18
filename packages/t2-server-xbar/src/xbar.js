@@ -77,7 +77,9 @@ async function run({ isDarkMode = false, serverName, displayMode = "image" }) {
         });
       }
     } else if (displayMode === "table") {
-      if (server.rows.length) {
+      const { rows } = getPlayersTable(server);
+
+      if (rows.length) {
         const columnWidths = server.gameTeams.map((team) =>
           Math.max(
             (team.name || "Players").length,
@@ -99,7 +101,7 @@ async function run({ isDarkMode = false, serverName, displayMode = "image" }) {
           bitbar.separator
         );
         lines.push(
-          ...server.rows.map((row) => ({
+          ...rows.map((row) => ({
             text: row
               .map((player, i) =>
                 (player ? sanitizeName(player.name) : "").padEnd(
