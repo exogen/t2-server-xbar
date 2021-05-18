@@ -28,10 +28,12 @@ clone this repo, then run:
 ```console
 $ yarn
 $ yarn run dev
+$ yarn run start:dev
 ```
 
 The plugin script will point to your working copy rather than the published
-package.
+package, and the image server (for generating the `image` display mode) will
+run locally.
 
 ## Updating
 
