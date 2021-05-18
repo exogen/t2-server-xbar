@@ -7,7 +7,6 @@ const { getPlayersTable } = require("t2-server-xbar");
 // See: https://github.com/Automattic/node-canvas/issues/1683
 registerFont(path.resolve(__dirname, "../fonts/SF-Pro-Text-Medium.otf"), {
   family: "SF Pro Text",
-  weight: "normal",
 });
 
 function drawImage(server) {
@@ -155,4 +154,34 @@ function drawImage(server) {
   return canvas;
 }
 
-module.exports = { drawImage };
+function drawFontTest() {
+  const canvas = createCanvas(800, 600);
+  const ctx = canvas.getContext("2d");
+
+  ctx.fillStyle = "#0c3b3a";
+  ctx.strokeStyle = "#2ae8bf";
+  ctx.lineWidth = 2;
+  ctx.fillRect(0, 0, 800, 600);
+  ctx.strokeRect(0, 0, 800, 600);
+
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#d6fff5";
+  [
+    "ultralight",
+    "thin",
+    "light",
+    "normal",
+    "medium",
+    "semibold",
+    "bold",
+    "heavy",
+    "black",
+  ].forEach((weight, i) => {
+    ctx.font = `${weight} 24px "SF Pro Text"`;
+    ctx.fillText("Team combat at an epic scale!", 400, 180 + 32 * i);
+  });
+
+  return canvas;
+}
+
+module.exports = { drawImage, drawFontTest };

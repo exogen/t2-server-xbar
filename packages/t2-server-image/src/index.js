@@ -2,7 +2,7 @@
 const express = require("express");
 const compression = require("compression");
 const { fetchServerStatus } = require("t2-server-xbar");
-const { drawImage } = require("./image");
+const { drawImage, drawFontTest } = require("./image");
 
 const fileType = "image/png";
 const port = process.env.PORT || 3000;
@@ -29,6 +29,19 @@ app.get("/", async (req, res) => {
       res.set("Server-Player-Count", server.playerCount);
       res.send(buffer);
     }
+  } catch (err) {
+    res.set("Content-Type", "text/plain");
+    res.status(500);
+    res.send(err.toString());
+  }
+});
+
+app.get("/font-test", (req, res) => {
+  try {
+    const canvas = drawFontTest();
+    const buffer = canvas.toBuffer(fileType, { resolution: 144 });
+    res.set("Content-Type", fileType);
+    res.send(buffer);
   } catch (err) {
     res.set("Content-Type", "text/plain");
     res.status(500);
