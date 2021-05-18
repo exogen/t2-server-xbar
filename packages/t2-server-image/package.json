@@ -1,0 +1,14 @@
+{
+  "name": "t2-server-image",
+  "version": "0.0.0",
+  "license": "MIT",
+  "bin": "src/index.js",
+  "main": "src/index.js",
+  "scripts": {},
+  "dependencies": {
+    "canvas": "^2.8.0",
+    "compression": "^1.7.4",
+    "express": "^4.17.1",
+    "t2-server-xbar": "^3.0.0"
+  }
+}

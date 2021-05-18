@@ -1,20 +1,20 @@
 {
   "name": "t2-server-xbar",
-  "version": "2.0.0",
+  "version": "0.0.0",
   "license": "MIT",
-  "bin": "src/index.js",
-  "main": "src/index.js",
+  "private": true,
+  "workspaces": [
+    "packages/t2-server-image",
+    "packages/t2-server-xbar"
+  ],
   "scripts": {
-    "dev": "node src/index.js dev",
-    "start": "node src/server.js"
+    "dev": "npm run xbar -- dev",
+    "start": "node packages/t2-server-image/src/index.js",
+    "start:dev": "nodemon packages/t2-server-image/src/index.js",
+    "xbar": "node packages/t2-server-xbar/src/bin.js"
   },
-  "dependencies": {
-    "bitbar": "^1.3.2",
-    "canvas": "^2.8.0",
-    "entities": "^2.2.0",
-    "execa": "^5.0.0",
-    "express": "^4.17.1",
-    "got": "^11.8.2",
-    "lodash.orderby": "^4.6.0"
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
