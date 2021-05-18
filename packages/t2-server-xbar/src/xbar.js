@@ -5,8 +5,6 @@ const {
   getPlayersTable,
 } = require("./server");
 
-const fallbackServerName = "^(Discord PUB|TacoServer Dev)$";
-
 const icon = {
   text: "",
   templateImage:
@@ -19,11 +17,7 @@ function sanitizeName(name) {
   return name.replace(/[|]/g, "│");
 }
 
-async function run({
-  isDarkMode = false,
-  serverName = fallbackServerName,
-  displayMode = "image",
-}) {
+async function run({ isDarkMode = false, serverName, displayMode = "image" }) {
   const normalColor = isDarkMode ? "#aaaaaa" : "#666666";
   const playerColor = "#888888";
 

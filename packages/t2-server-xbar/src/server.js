@@ -2,7 +2,7 @@ const got = require("got");
 const orderBy = require("lodash.orderby");
 const entities = require("entities");
 
-async function fetchServerStatus(regexString) {
+async function fetchServerStatus(regexString = defaultServerName) {
   const regex = new RegExp(regexString);
 
   const response = await got("https://www.tribesnext.com/json", {
@@ -59,7 +59,9 @@ async function fetchServerStatus(regexString) {
   };
 }
 
-async function fetchServerImage(regexString) {
+const defaultServerName = "^(Discord PUB|TacoServer Dev)$";
+
+async function fetchServerImage(regexString = defaultServerName) {
   const url =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000/"

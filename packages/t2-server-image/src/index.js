@@ -15,7 +15,7 @@ app.get("/", async (req, res) => {
   const responseType =
     req.headers.accept === "application/json" ? "application/json" : fileType;
   try {
-    const server = await fetchServerStatus(/Discord PUB/);
+    const server = await fetchServerStatus(serverName || undefined);
     const canvas = drawImage(server);
     const buffer = canvas.toBuffer(fileType, { resolution: 144 });
     res.set("Content-Type", responseType);
