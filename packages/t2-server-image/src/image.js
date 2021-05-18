@@ -2,17 +2,12 @@ const path = require("path");
 const { createCanvas, loadImage, registerFont } = require("canvas");
 const { getPlayersTable } = require("t2-server-xbar");
 
+// node-canvas doesn't select fonts correctly. For now, only register one weight
+// and use Medium instead of Regular.
+// See: https://github.com/Automattic/node-canvas/issues/1683
 registerFont(path.resolve(__dirname, "../fonts/SF-Pro-Text-Medium.otf"), {
-  family: "SF Pro",
+  family: "SF Pro Text",
   weight: "normal",
-});
-registerFont(path.resolve(__dirname, "../fonts/SF-Pro-Text-Semibold.otf"), {
-  family: "SF Pro",
-  weight: "semibold",
-});
-registerFont(path.resolve(__dirname, "../fonts/SF-Pro-Text-Bold.otf"), {
-  family: "SF Pro",
-  weight: "bold",
 });
 
 function drawImage(server) {
@@ -79,16 +74,16 @@ function drawImage(server) {
   ctx.stroke();
 
   ctx.textAlign = "center";
-  ctx.font = "26px SF Pro";
+  ctx.font = '26px "SF Pro Text"';
   ctx.fillStyle = "#81fff3";
   ctx.fillText(server.map, leftBorder + width / 2, 56);
-  ctx.font = "20px SF Pro";
+  ctx.font = '20px "SF Pro Text"';
   ctx.fillStyle = "#6ec6a8";
   ctx.fillText(server.gameType, leftBorder + width / 2, 86);
 
   if (server.playerCount > 0) {
     ctx.textAlign = "left";
-    ctx.font = "26px SF Pro";
+    ctx.font = '26px "SF Pro Text"';
     ctx.fillStyle = "#24ff8a";
     if (leftTeam && leftTeam.name) {
       ctx.fillText(leftTeam.name, leftColumn, bodyTop);
@@ -101,7 +96,7 @@ function drawImage(server) {
     }
 
     ctx.textAlign = "right";
-    ctx.font = "22px SF Pro";
+    ctx.font = '22px "SF Pro Text"';
     ctx.fillStyle = "#fffa17";
     if (leftTeam && leftTeam.name) {
       ctx.fillText(leftTeam.score, leftScoreColumn, bodyTop);
@@ -111,7 +106,7 @@ function drawImage(server) {
     }
 
     ctx.textAlign = "left";
-    ctx.font = "24px SF Pro";
+    ctx.font = '24px "SF Pro Text"';
     ctx.fillStyle = "#d6fff5";
 
     rows.forEach((row, i) => {
@@ -137,7 +132,7 @@ function drawImage(server) {
     });
 
     ctx.textAlign = "right";
-    ctx.font = "20px SF Pro";
+    ctx.font = '20px "SF Pro Text"';
     ctx.fillStyle = "#79d5b6";
 
     rows.forEach((row, i) => {
@@ -152,7 +147,7 @@ function drawImage(server) {
     });
   } else {
     ctx.textAlign = "center";
-    ctx.font = "24px SF Pro";
+    ctx.font = '24px "SF Pro Text"';
     ctx.fillStyle = "#76b8a7";
     ctx.fillText("No players online.", leftBorder + width / 2, 212);
   }

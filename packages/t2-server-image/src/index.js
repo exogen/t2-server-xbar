@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const express = require("express");
 const compression = require("compression");
 const { fetchServerStatus } = require("t2-server-xbar");
