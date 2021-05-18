@@ -90,10 +90,10 @@ function drawImage(server) {
     ctx.textAlign = "left";
     ctx.font = "26px SF Pro";
     ctx.fillStyle = "#24ff8a";
-    if (leftTeam) {
+    if (leftTeam && leftTeam.name) {
       ctx.fillText(leftTeam.name, leftColumn, bodyTop);
     }
-    if (rightTeam) {
+    if (rightTeam && rightTeam.name) {
       ctx.fillText(rightTeam.name, rightColumn, bodyTop);
     }
     ctx.fillText("Observers", leftColumn, observersTop);

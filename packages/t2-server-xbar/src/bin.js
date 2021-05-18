@@ -7,7 +7,9 @@ const { run } = require("./xbar");
 const args = process.argv.slice(2);
 const command = args[0];
 const scriptContent =
-  command === "dev" ? `node "${__filename}"` : "npx t2-server-xbar";
+  command === "dev"
+    ? `NODE_ENV=development node "${__filename}"`
+    : "npx t2-server-xbar";
 
 const bashScript = `#!/bin/bash
 
@@ -16,7 +18,7 @@ const bashScript = `#!/bin/bash
 #  <xbar.author>Brian Beck</xbar.author>
 #  <xbar.author.github>exogen</xbar.author.github>
 #  <xbar.desc>Show the status of a Tribes 2 server.</xbar.desc>
-#  <xbar.dependencies>node,npx,imagemagick</xbar.dependencies>
+#  <xbar.dependencies>node,npx</xbar.dependencies>
 #  <xbar.abouturl>https://github.com/exogen/t2-server-xbar</xbar.abouturl>
 
 #  <xbar.var>string(VAR_SERVER_NAME="Discord PUB"): Server name to match (regular expression).</xbar.var>

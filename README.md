@@ -20,12 +20,6 @@ Then run:
 $ npx t2-server-xbar install
 ```
 
-To enable image display mode (seen above), you must have ImageMagick installed:
-
-```console
-$ brew install imagemagick
-```
-
 ## Development
 
 If you’d like to develop this plugin and run it directly from a git checkout,
@@ -41,9 +35,11 @@ package.
 
 ## Updating
 
-Since the plugin uses `npx` to run the `t2-server-xbar` script from npm, it should stay up to date automatically.
+Since the plugin uses `npx` to run the `t2-server-xbar` script from npm, it
+should stay up to date automatically.
 
-However, if new options are added, you may need to re-run the install command (above) for them to show up.
+However, if new options are added, you may need to re-run the install command
+(above) for them to show up.
 
 ## Options
 
@@ -55,8 +51,8 @@ A regular expression (case sensitive) to select the server to query.
 
 #### Display mode
 
-Server info can be shown in three ways: `image`, `table`, or `submenu` mode.
-Image mode is the default (seen above) and requires ImageMagick to be installed.
+Server info can be shown in three ways: `image`, `table`, or `submenu` mode. As
+of v2.0.0, image mode is the default (seen above).
 
 Table mode looks like:
 
@@ -69,5 +65,3 @@ Submenu mode looks like:
 <p align="center">
 <img src="screenshot-submenu.png" alt="Submenu mode screenshot" width="430">
 </p>
-
-As of v2.0.0, image mode is the default.
