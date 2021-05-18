@@ -112,7 +112,7 @@ async function drawImage(server) {
   const leftScoreColumn = teamCount > 1 ? 390 : 200;
   let verticalPosition = teamCount > 1 ? 174 : 140;
   const rightColumn = 460;
-  const rightScoreColumn = 36;
+  const rightScoreColumn = 40;
 
   const draw = ["fill #d6fff5 font-size 12 gravity NorthWest"];
   for (let i = 0; i < rows.length; i++) {
