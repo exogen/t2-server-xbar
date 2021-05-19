@@ -120,7 +120,7 @@ function drawImage(server) {
     }
 
     ctx.textAlign = "right";
-    ctx.font = '22px "xbar SF"';
+    ctx.font = '22px "xbar SF Display"';
     ctx.fillStyle = "#fffa17";
     if (leftTeam && leftTeam.name) {
       ctx.fillText(leftTeam.score, leftScoreColumn, bodyTop);
@@ -156,7 +156,7 @@ function drawImage(server) {
     });
 
     ctx.textAlign = "right";
-    ctx.font = '20px "xbar SF"';
+    ctx.font = '20px "xbar SF Display"';
     ctx.fillStyle = "#79d5b6";
 
     rows.forEach((row, i) => {
