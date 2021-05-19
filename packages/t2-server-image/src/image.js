@@ -8,6 +8,9 @@ const { getPlayersTable } = require("t2-server-xbar");
 registerFont(path.resolve(__dirname, "../fonts/xbarSF-Regular.ttf"), {
   family: "xbar SF",
 });
+registerFont(path.resolve(__dirname, "../fonts/xbarSFDisplay-Regular.ttf"), {
+  family: "xbar SF Display",
+});
 
 function drawImage(server) {
   const { columnCount, rowCount, rows, observerRowCount, observerRows } =
@@ -105,7 +108,7 @@ function drawImage(server) {
     }
 
     ctx.textAlign = "left";
-    ctx.font = '24px "xbar SF"';
+    ctx.font = '24px "xbar SF Display"';
     ctx.fillStyle = "#d6fff5";
 
     rows.forEach((row, i) => {
