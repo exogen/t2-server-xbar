@@ -12,6 +12,12 @@ async function fetchServerStatus(regexString = defaultServerName) {
     regex.test(server.info_hostname)
   );
 
+  if (!server) {
+    const err = new Error("Server not found");
+    err.name = "NotFound";
+    throw err;
+  }
+
   const teams = server.info_players.map((team) => {
     return {
       name: team.name,

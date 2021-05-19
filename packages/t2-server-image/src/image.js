@@ -46,22 +46,44 @@ function drawImage(server) {
   }
 
   const width = 726;
+  const canvas = createCanvas(800, height);
+  const ctx = canvas.getContext("2d");
+
+  // Find max player name length.
+  ctx.font = '22px "xbar SF"';
+  const playerNameWidths = [];
+  server.gameTeams.forEach((team) => {
+    team.players.forEach((player) => {
+      playerNameWidths.push(ctx.measureText(player.name).width);
+    });
+  });
+  if (server.observerTeam) {
+    server.observerTeam.players.forEach((player) => {
+      playerNameWidths.push(ctx.measureText(player.name).width);
+    });
+  }
+  const maxPlayerNameWidth = Math.max(0, ...playerNameWidths);
+  // Maximum length before decreasing gutter size.
+  const playerNameWidthLimit = 234;
+
   const topBorder = 2;
   const leftBorder = 72;
   const rightBorder = leftBorder + width;
   const bottomBorder = height - 4;
-  const padding = columnCount === 1 ? 200 : 40;
-  const centerPadding = 30;
-  const leftColumn = leftBorder + padding;
+  let gutter = 40;
+  if (columnCount === 1) {
+    gutter = 200;
+  } else if (maxPlayerNameWidth > playerNameWidthLimit) {
+    gutter = 30;
+  }
+  const centerGutter = maxPlayerNameWidth > playerNameWidthLimit ? 16 : 30;
+  const leftColumn = leftBorder + gutter;
   const leftScoreColumn =
     columnCount === 1
-      ? rightBorder - padding
-      : rightBorder - width / 2 - centerPadding;
-  const rightColumn = leftBorder + width / 2 + centerPadding;
-  const rightScoreColumn = rightBorder - padding;
-
-  const canvas = createCanvas(800, height);
-  const ctx = canvas.getContext("2d");
+      ? rightBorder - gutter
+      : rightBorder - width / 2 - centerGutter;
+  const rightColumn = leftBorder + width / 2 + centerGutter;
+  const rightScoreColumn = rightBorder - gutter;
 
   ctx.fillStyle = "#0c3b3a";
   ctx.strokeStyle = "#2ae8bf";
@@ -85,7 +107,7 @@ function drawImage(server) {
 
   if (server.playerCount > 0) {
     ctx.textAlign = "left";
-    ctx.font = '26px "xbar SF"';
+    ctx.font = '24px "xbar SF"';
     ctx.fillStyle = "#24ff8a";
     if (leftTeam && leftTeam.name) {
       ctx.fillText(leftTeam.name, leftColumn, bodyTop);
@@ -108,7 +130,7 @@ function drawImage(server) {
     }
 
     ctx.textAlign = "left";
-    ctx.font = '24px "xbar SF Display"';
+    ctx.font = '22px "xbar SF"';
     ctx.fillStyle = "#d6fff5";
 
     rows.forEach((row, i) => {
