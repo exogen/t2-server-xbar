@@ -88,11 +88,26 @@ function drawImage(server) {
   ctx.fillStyle = "#0c3b3a";
   ctx.strokeStyle = "#2ae8bf";
   ctx.lineWidth = 2;
-  ctx.fillRect(leftBorder, topBorder, width, bottomBorder - topBorder);
+  drawRoundedRectangle(
+    ctx,
+    leftBorder,
+    topBorder,
+    width,
+    bottomBorder - topBorder,
+    10
+  );
+  ctx.fill();
+  ctx.stroke();
   ctx.fillStyle = "#02312b";
-  ctx.fillRect(leftBorder, topBorder, width, 120);
-  ctx.strokeRect(leftBorder, topBorder, width, bottomBorder - topBorder);
+  drawRoundedRectangle(ctx, leftBorder + 2, topBorder + 2, width - 4, 120 - 4, {
+    nw: 6,
+    ne: 6,
+    se: 0,
+    sw: 0,
+  });
+  ctx.fill();
   ctx.strokeStyle = "#2e6b66";
+  ctx.beginPath();
   ctx.moveTo(leftBorder + 2, 122);
   ctx.lineTo(rightBorder - 2, 122);
   ctx.stroke();
@@ -179,6 +194,26 @@ function drawImage(server) {
   return canvas;
 }
 
+function drawRoundedRectangle(ctx, x, y, width, height, radius = 0) {
+  if (typeof radius === "number") {
+    radius = { nw: radius, ne: radius, se: radius, sw: radius };
+  }
+
+  const xEnd = x + width;
+  const yEnd = y + height;
+
+  ctx.beginPath();
+  ctx.moveTo(x + radius.nw, y);
+  ctx.lineTo(xEnd - radius.ne, y);
+  ctx.quadraticCurveTo(xEnd, y, xEnd, y + radius.ne);
+  ctx.lineTo(xEnd, yEnd - radius.se);
+  ctx.quadraticCurveTo(xEnd, yEnd, xEnd - radius.se, yEnd);
+  ctx.lineTo(x + radius.sw, yEnd);
+  ctx.quadraticCurveTo(x, yEnd, x, yEnd - radius.sw);
+  ctx.lineTo(x, y + radius.nw);
+  ctx.quadraticCurveTo(x, y, x + radius.nw, y);
+}
+
 function drawFontTest() {
   const canvas = createCanvas(800, 600);
   const ctx = canvas.getContext("2d");
@@ -186,8 +221,10 @@ function drawFontTest() {
   ctx.fillStyle = "#0c3b3a";
   ctx.strokeStyle = "#2ae8bf";
   ctx.lineWidth = 2;
-  ctx.fillRect(0, 0, 800, 600);
-  ctx.strokeRect(0, 0, 800, 600);
+
+  drawRoundedRectangle(ctx, 0, 0, 800, 600, 10);
+  ctx.fill();
+  ctx.stroke();
 
   ctx.textAlign = "center";
   ctx.fillStyle = "#d6fff5";
@@ -202,8 +239,10 @@ function drawFontTest() {
     "heavy",
     "black",
   ].forEach((weight, i) => {
-    ctx.font = `${weight} 24px "xbar SF"`;
-    ctx.fillText("Team combat at an epic scale!", 400, 180 + 32 * i);
+    ctx.font = `${weight} 22px "xbar SF"`;
+    ctx.fillText("Team combat at an epic scale!", 400, 36 + 64 * i);
+    ctx.font = `${weight} 22px "xbar SF Display"`;
+    ctx.fillText("Team combat at an epic scale!", 400, 36 + 32 + 64 * i);
   });
 
   return canvas;
