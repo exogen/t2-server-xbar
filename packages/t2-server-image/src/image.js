@@ -86,8 +86,9 @@ function drawImage(server) {
   const rightScoreColumn = rightBorder - gutter;
 
   const gradient = ctx.createLinearGradient(0, topBorder, 0, bottomBorder);
-  gradient.addColorStop(0, "#0c4644");
-  gradient.addColorStop(1, "#043030");
+  gradient.addColorStop(0, "#043030");
+  gradient.addColorStop(0.93, "#0c4644");
+  gradient.addColorStop(1, "#035858");
   ctx.fillStyle = gradient;
   ctx.lineWidth = 2;
   // Fill container.
@@ -101,7 +102,7 @@ function drawImage(server) {
   );
   ctx.fill();
   // Fill header.
-  ctx.fillStyle = "#01302a";
+  ctx.fillStyle = "#00272688";
   drawRoundedRectangle(ctx, leftBorder + 2, topBorder + 2, width - 4, 120, {
     nw: 6,
     ne: 6,
