@@ -30,23 +30,23 @@ function drawImage(server) {
   const observersHeight = observerRowCount ? 40 + 36 * observerRowCount : 0;
   const observersTop = bodyTop + (teamsHeight ? teamsHeight + 30 : 0);
 
-  let height = 200;
+  let totalHeight = 200;
   if (server.playerCount > 0) {
     if (teamsHeight) {
-      height += teamsHeight + 10;
+      totalHeight += teamsHeight + 10;
     }
     if (observersHeight) {
       if (teamsHeight) {
-        height += 20;
+        totalHeight += 20;
       }
-      height += observersHeight + 10;
+      totalHeight += observersHeight + 10;
     }
   } else {
-    height += 120;
+    totalHeight += 120;
   }
 
-  const width = 726;
-  const canvas = createCanvas(800, height);
+  const totalWidth = 840;
+  const canvas = createCanvas(totalWidth, totalHeight);
   const ctx = canvas.getContext("2d");
 
   // Find max player name length.
@@ -67,12 +67,14 @@ function drawImage(server) {
   const playerNameWidthLimit = 234;
 
   const topBorder = 12;
+  const bottomBorder = totalHeight - 14;
   const leftBorder = 72;
-  const rightBorder = leftBorder + width;
-  const bottomBorder = height - 14;
+  const rightBorder = totalWidth - 2;
+  const width = rightBorder - leftBorder;
+  const height = bottomBorder - topBorder;
   let gutter = 40;
   if (columnCount === 1) {
-    gutter = 200;
+    gutter = 220;
   } else if (maxPlayerNameWidth > playerNameWidthLimit) {
     gutter = 30;
   }
@@ -92,14 +94,7 @@ function drawImage(server) {
   ctx.fillStyle = gradient;
   ctx.lineWidth = 2;
   // Fill container.
-  drawRoundedRectangle(
-    ctx,
-    leftBorder,
-    topBorder,
-    width,
-    bottomBorder - topBorder,
-    10
-  );
+  drawRoundedRectangle(ctx, leftBorder, topBorder, width, height, 10);
   ctx.fill();
   // Fill header.
   ctx.fillStyle = "#00272688";
@@ -118,14 +113,7 @@ function drawImage(server) {
 
   // Stroke container.
   ctx.strokeStyle = "#2ae8bf";
-  drawRoundedRectangle(
-    ctx,
-    leftBorder,
-    topBorder,
-    width,
-    bottomBorder - topBorder,
-    10
-  );
+  drawRoundedRectangle(ctx, leftBorder, topBorder, width, height, 10);
   ctx.stroke();
   ctx.shadowColor = "none";
   ctx.shadowBlur = 0;
