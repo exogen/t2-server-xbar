@@ -26,11 +26,11 @@ function drawImage(server) {
     teamsHeight += 36 * rowCount;
   }
 
-  const bodyTop = 176;
+  const bodyTop = 186;
   const observersHeight = observerRowCount ? 40 + 36 * observerRowCount : 0;
   const observersTop = bodyTop + (teamsHeight ? teamsHeight + 30 : 0);
 
-  let height = 180;
+  let height = 200;
   if (server.playerCount > 0) {
     if (teamsHeight) {
       height += teamsHeight + 10;
@@ -66,10 +66,10 @@ function drawImage(server) {
   // Maximum length before decreasing gutter size.
   const playerNameWidthLimit = 234;
 
-  const topBorder = 2;
+  const topBorder = 12;
   const leftBorder = 72;
   const rightBorder = leftBorder + width;
-  const bottomBorder = height - 4;
+  const bottomBorder = height - 14;
   let gutter = 40;
   if (columnCount === 1) {
     gutter = 200;
@@ -85,9 +85,12 @@ function drawImage(server) {
   const rightColumn = leftBorder + width / 2 + centerGutter;
   const rightScoreColumn = rightBorder - gutter;
 
-  ctx.fillStyle = "#0c3b3a";
-  ctx.strokeStyle = "#2ae8bf";
+  const gradient = ctx.createLinearGradient(0, topBorder, 0, bottomBorder);
+  gradient.addColorStop(0, "#0c4644");
+  gradient.addColorStop(1, "#043030");
+  ctx.fillStyle = gradient;
   ctx.lineWidth = 2;
+  // Fill container.
   drawRoundedRectangle(
     ctx,
     leftBorder,
@@ -97,9 +100,9 @@ function drawImage(server) {
     10
   );
   ctx.fill();
-  ctx.stroke();
-  ctx.fillStyle = "#02312b";
-  drawRoundedRectangle(ctx, leftBorder + 2, topBorder + 2, width - 4, 120 - 4, {
+  // Fill header.
+  ctx.fillStyle = "#01302a";
+  drawRoundedRectangle(ctx, leftBorder + 2, topBorder + 2, width - 4, 120, {
     nw: 6,
     ne: 6,
     se: 0,
@@ -108,17 +111,35 @@ function drawImage(server) {
   ctx.fill();
   ctx.strokeStyle = "#2e6b66";
   ctx.beginPath();
-  ctx.moveTo(leftBorder + 2, 122);
-  ctx.lineTo(rightBorder - 2, 122);
+  ctx.moveTo(leftBorder + 2, topBorder + 122);
+  ctx.lineTo(rightBorder - 2, topBorder + 122);
   ctx.stroke();
+
+  // Stroke container.
+  ctx.strokeStyle = "#2ae8bf";
+  drawRoundedRectangle(
+    ctx,
+    leftBorder,
+    topBorder,
+    width,
+    bottomBorder - topBorder,
+    10
+  );
+  ctx.stroke();
+  ctx.shadowColor = "none";
+  ctx.shadowBlur = 0;
 
   ctx.textAlign = "center";
   ctx.font = '26px "xbar SF"';
   ctx.fillStyle = "#81fff3";
-  ctx.fillText(server.map, leftBorder + width / 2, 56);
+  ctx.shadowColor = "#81fff388";
+  ctx.shadowBlur = 8;
+  ctx.fillText(server.map, leftBorder + width / 2, topBorder + 56);
+  ctx.shadowColor = "none";
+  ctx.shadowBlur = 0;
   ctx.font = '20px "xbar SF"';
   ctx.fillStyle = "#6ec6a8";
-  ctx.fillText(server.gameType, leftBorder + width / 2, 86);
+  ctx.fillText(server.gameType, leftBorder + width / 2, topBorder + 86);
 
   if (server.playerCount > 0) {
     ctx.textAlign = "left";
@@ -188,7 +209,7 @@ function drawImage(server) {
     ctx.textAlign = "center";
     ctx.font = '24px "xbar SF"';
     ctx.fillStyle = "#76b8a7";
-    ctx.fillText("No players online.", leftBorder + width / 2, 212);
+    ctx.fillText("No players online.", leftBorder + width / 2, 222);
   }
 
   return canvas;
