@@ -5,8 +5,14 @@ const { getPlayersTable } = require("t2-server-xbar");
 // node-canvas doesn't select fonts correctly. For now, only register one weight
 // and use Medium instead of Regular.
 // See: https://github.com/Automattic/node-canvas/issues/1683
+registerFont(path.resolve(__dirname, "../fonts/SF-Pro-Text-Regular.otf"), {
+  family: "SFProText-Regular",
+});
 registerFont(path.resolve(__dirname, "../fonts/SF-Pro-Text-Medium.otf"), {
-  family: "SF Pro Text",
+  family: "SFProText-Medium",
+});
+registerFont(path.resolve(__dirname, "../fonts/SF-Pro-Text-Bold.otf"), {
+  family: "SFProText-Bold",
 });
 
 function drawImage(server) {
@@ -73,16 +79,16 @@ function drawImage(server) {
   ctx.stroke();
 
   ctx.textAlign = "center";
-  ctx.font = '26px "SF Pro Text"';
+  ctx.font = '26px "SFProText-Regular"';
   ctx.fillStyle = "#81fff3";
   ctx.fillText(server.map, leftBorder + width / 2, 56);
-  ctx.font = '20px "SF Pro Text"';
+  ctx.font = '20px "SFProText-Regular"';
   ctx.fillStyle = "#6ec6a8";
   ctx.fillText(server.gameType, leftBorder + width / 2, 86);
 
   if (server.playerCount > 0) {
     ctx.textAlign = "left";
-    ctx.font = '26px "SF Pro Text"';
+    ctx.font = '26px "SFProText-Regular"';
     ctx.fillStyle = "#24ff8a";
     if (leftTeam && leftTeam.name) {
       ctx.fillText(leftTeam.name, leftColumn, bodyTop);
@@ -95,7 +101,7 @@ function drawImage(server) {
     }
 
     ctx.textAlign = "right";
-    ctx.font = '22px "SF Pro Text"';
+    ctx.font = '22px "SFProText-Regular"';
     ctx.fillStyle = "#fffa17";
     if (leftTeam && leftTeam.name) {
       ctx.fillText(leftTeam.score, leftScoreColumn, bodyTop);
@@ -105,7 +111,7 @@ function drawImage(server) {
     }
 
     ctx.textAlign = "left";
-    ctx.font = '24px "SF Pro Text"';
+    ctx.font = '24px "SFProText-Regular"';
     ctx.fillStyle = "#d6fff5";
 
     rows.forEach((row, i) => {
@@ -131,7 +137,7 @@ function drawImage(server) {
     });
 
     ctx.textAlign = "right";
-    ctx.font = '20px "SF Pro Text"';
+    ctx.font = '20px "SFProText-Regular"';
     ctx.fillStyle = "#79d5b6";
 
     rows.forEach((row, i) => {
@@ -146,7 +152,7 @@ function drawImage(server) {
     });
   } else {
     ctx.textAlign = "center";
-    ctx.font = '24px "SF Pro Text"';
+    ctx.font = '24px "SFProText-Regular"';
     ctx.fillStyle = "#76b8a7";
     ctx.fillText("No players online.", leftBorder + width / 2, 212);
   }
@@ -167,17 +173,17 @@ function drawFontTest() {
   ctx.textAlign = "center";
   ctx.fillStyle = "#d6fff5";
   [
-    "ultralight",
-    "thin",
-    "light",
-    "normal",
-    "medium",
-    "semibold",
-    "bold",
-    "heavy",
-    "black",
+    // "Ultralight",
+    // "Thin",
+    // "Light",
+    "Regular",
+    "Medium",
+    // "Semibold",
+    "Bold",
+    // "Heavy",
+    // "Black",
   ].forEach((weight, i) => {
-    ctx.font = `${weight} 24px "SF Pro Text"`;
+    ctx.font = `24px "SFProText-${weight}"`;
     ctx.fillText("Team combat at an epic scale!", 400, 180 + 32 * i);
   });
 
