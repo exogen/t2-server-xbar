@@ -23,11 +23,12 @@ app.get("/", async (req, res) => {
     req.headers.accept === "application/json" ? "application/json" : fileType;
   try {
     const cacheKey = JSON.stringify({ serverName });
-    let server = cache.get(cacheKey);
-    if (!server) {
-      server = await fetchServerStatus(serverName || undefined);
-      cache.set(cacheKey, server);
+    let serverPromise = cache.get(cacheKey);
+    if (!serverPromise) {
+      serverPromise = fetchServerStatus(serverName || undefined);
+      cache.set(cacheKey, serverPromise);
     }
+    const server = await serverPromise;
     const canvas = drawImage(server);
     const buffer = canvas.toBuffer(fileType, { resolution: 144 });
     res.set("Content-Type", responseType);
