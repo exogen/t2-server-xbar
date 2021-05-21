@@ -1,5 +1,5 @@
 const path = require("path");
-const { createCanvas, loadImage, registerFont } = require("canvas");
+const { createCanvas, registerFont } = require("canvas");
 const { getPlayersTable } = require("t2-server-xbar");
 
 // node-canvas doesn't select fonts correctly. For now, only register one weight

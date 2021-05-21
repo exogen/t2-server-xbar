@@ -3,6 +3,12 @@ const express = require("express");
 const compression = require("compression");
 const { fetchServerStatus } = require("t2-server-xbar");
 const { drawImage, drawFontTest } = require("./image");
+const LRU = require("lru-cache");
+
+const cache = new LRU({
+  max: 10,
+  maxAge: 30 * 1000,
+});
 
 const fileType = "image/png";
 const port = process.env.PORT || 3000;
@@ -16,7 +22,12 @@ app.get("/", async (req, res) => {
   const responseType =
     req.headers.accept === "application/json" ? "application/json" : fileType;
   try {
-    const server = await fetchServerStatus(serverName || undefined);
+    const cacheKey = JSON.stringify({ serverName });
+    let server = cache.get(cacheKey);
+    if (!server) {
+      server = await fetchServerStatus(serverName || undefined);
+      cache.set(cacheKey, server);
+    }
     const canvas = drawImage(server);
     const buffer = canvas.toBuffer(fileType, { resolution: 144 });
     res.set("Content-Type", responseType);

@@ -9,6 +9,7 @@
     "canvas": "^2.8.0",
     "compression": "^1.7.4",
     "express": "^4.17.1",
+    "lru-cache": "^6.0.0",
     "t2-server-xbar": "^3.0.0"
   }
 }
