@@ -2,8 +2,9 @@ const path = require("path");
 const { createCanvas, registerFont } = require("canvas");
 const { getPlayersTable } = require("t2-server-xbar");
 
-// node-canvas doesn't select fonts correctly. For now, only register one weight
-// and use Medium instead of Regular.
+// node-canvas doesn't select fonts correctly. I had to edit SF Text and SF
+// Display in a font editor and give them new family names to get them to
+// render correctly.
 // See: https://github.com/Automattic/node-canvas/issues/1683
 registerFont(path.resolve(__dirname, "../fonts/xbarSF-Regular.ttf"), {
   family: "xbar SF",
@@ -12,7 +13,17 @@ registerFont(path.resolve(__dirname, "../fonts/xbarSFDisplay-Regular.ttf"), {
   family: "xbar SF Display",
 });
 
-function drawImage(server) {
+function drawImage(
+  server,
+  {
+    padding = {
+      top: 12,
+      right: 2,
+      bottom: 14,
+      left: 72,
+    },
+  } = {}
+) {
   const { columnCount, rowCount, rows, observerRowCount, observerRows } =
     getPlayersTable(server);
 
@@ -26,11 +37,11 @@ function drawImage(server) {
     teamsHeight += 36 * rowCount;
   }
 
-  const bodyTop = 186;
+  const bodyTop = 175 + padding.top;
   const observersHeight = observerRowCount ? 40 + 36 * observerRowCount : 0;
   const observersTop = bodyTop + (teamsHeight ? teamsHeight + 30 : 0);
 
-  let totalHeight = 200;
+  let totalHeight = 176 + padding.top + padding.bottom;
   if (server.playerCount > 0) {
     if (teamsHeight) {
       totalHeight += teamsHeight + 10;
@@ -45,7 +56,7 @@ function drawImage(server) {
     totalHeight += 120;
   }
 
-  const totalWidth = 840;
+  const totalWidth = 768 + padding.left + padding.right;
   const canvas = createCanvas(totalWidth, totalHeight);
   const ctx = canvas.getContext("2d");
 
@@ -66,10 +77,11 @@ function drawImage(server) {
   // Maximum length before decreasing gutter size.
   const playerNameWidthLimit = 234;
 
-  const topBorder = 12;
-  const bottomBorder = totalHeight - 14;
-  const leftBorder = 72;
-  const rightBorder = totalWidth - 2;
+  // Need to account for stroke width and add/subtract 1 around the border.
+  const topBorder = padding.top + 1;
+  const bottomBorder = totalHeight - padding.bottom - 1;
+  const leftBorder = padding.left + 1;
+  const rightBorder = totalWidth - padding.right - 1;
   const width = rightBorder - leftBorder;
   const height = bottomBorder - topBorder;
   let gutter = 40;

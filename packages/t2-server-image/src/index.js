@@ -17,8 +17,42 @@ const app = express();
 
 app.use(compression());
 
+function parsePadding(paddingString) {
+  if (/^[\d,]+$/.test(paddingString)) {
+    const sides = paddingString.split(",").map((s) => parseInt(s, 10) || 0);
+    switch (sides.length) {
+      case 1:
+        return {
+          top: sides[0],
+          right: sides[0],
+          bottom: sides[0],
+          left: sides[0],
+        };
+      case 2:
+        return {
+          top: sides[0],
+          right: sides[1],
+          bottom: sides[0],
+          left: sides[1],
+        };
+      case 3:
+        // I hate this possibility.
+        return undefined;
+      case 4:
+        return {
+          top: sides[0],
+          right: sides[1],
+          bottom: sides[2],
+          left: sides[3],
+        };
+    }
+  }
+  // Use default.
+  return undefined;
+}
+
 app.get("/", async (req, res) => {
-  const { serverName } = req.query;
+  const { serverName, padding: paddingString } = req.query;
   const responseType =
     req.headers.accept === "application/json" ? "application/json" : fileType;
   try {
@@ -29,7 +63,8 @@ app.get("/", async (req, res) => {
       cache.set(cacheKey, serverPromise);
     }
     const server = await serverPromise;
-    const canvas = drawImage(server);
+    const padding = parsePadding(paddingString);
+    const canvas = drawImage(server, { padding });
     const buffer = canvas.toBuffer(fileType, { resolution: 144 });
     res.set("Content-Type", responseType);
     if (responseType === "application/json") {
