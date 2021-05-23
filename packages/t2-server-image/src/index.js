@@ -5,9 +5,14 @@ const { fetchServerStatus } = require("t2-server-xbar");
 const { drawImage, drawFontTest } = require("./image");
 const LRU = require("lru-cache");
 
-const cache = new LRU({
+const serverStatusCache = new LRU({
   max: 10,
-  maxAge: 30 * 1000,
+  maxAge: 1000 * 30, // 30 seconds
+});
+
+const snapshotCache = new LRU({
+  max: 100,
+  maxAge: 1000 * 60 * 60, // 1 hour
 });
 
 const fileType = "image/png";
@@ -51,21 +56,68 @@ function parsePadding(paddingString) {
   return undefined;
 }
 
+async function getServerStatus({ serverName, cache = true }) {
+  let cacheKey = cache ? JSON.stringify({ serverName }) : null;
+  let serverPromise;
+  if (cacheKey) {
+    serverPromise = serverStatusCache.get(cacheKey);
+  }
+  if (!serverPromise) {
+    serverPromise = fetchServerStatus(serverName || undefined);
+    if (cacheKey) {
+      serverStatusCache.set(cacheKey, serverPromise);
+    }
+  }
+  return serverPromise;
+}
+
+async function getServerSnapshot({
+  serverName,
+  paddingString,
+  timestamp,
+  cache = true,
+}) {
+  let cacheKey =
+    cache && timestamp
+      ? JSON.stringify({ serverName, paddingString, timestamp })
+      : null;
+
+  let snapshotPromise;
+  if (cacheKey) {
+    snapshotPromise = snapshotCache.get(cacheKey);
+  }
+  if (!snapshotPromise) {
+    snapshotPromise = new Promise(async (resolve, reject) => {
+      try {
+        const server = await getServerStatus({ serverName, cache });
+        const padding = parsePadding(paddingString);
+        const canvas = drawImage(server, { padding });
+        const buffer = canvas.toBuffer(fileType, { resolution: 144 });
+        resolve({ server, buffer });
+      } catch (err) {
+        reject(err);
+      }
+    });
+    if (cacheKey) {
+      snapshotCache.set(cacheKey, snapshotPromise);
+    }
+  } else {
+    console.log(`Found cached result for key: ${cacheKey}`);
+  }
+  return snapshotPromise;
+}
+
 app.get("/", async (req, res) => {
-  const { serverName, padding: paddingString } = req.query;
+  const { serverName, padding: paddingString, t: timestamp } = req.query;
   const responseType =
     req.headers.accept === "application/json" ? "application/json" : fileType;
+
   try {
-    const cacheKey = JSON.stringify({ serverName });
-    let serverPromise = cache.get(cacheKey);
-    if (!serverPromise) {
-      serverPromise = fetchServerStatus(serverName || undefined);
-      cache.set(cacheKey, serverPromise);
-    }
-    const server = await serverPromise;
-    const padding = parsePadding(paddingString);
-    const canvas = drawImage(server, { padding });
-    const buffer = canvas.toBuffer(fileType, { resolution: 144 });
+    const { server, buffer } = await getServerSnapshot({
+      serverName,
+      paddingString,
+      timestamp,
+    });
     res.set("Content-Type", responseType);
     if (responseType === "application/json") {
       res.json({
