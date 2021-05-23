@@ -135,9 +135,45 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.get("/:timestamp/image.png", async (req, res) => {
-  const { timestamp } = req.params;
-  const { serverName, padding: paddingString } = req.query;
+app.get(/\/(.+)\/image\.png/, async (req, res) => {
+  const { 0: fieldString } = req.params;
+  let timestamp;
+  let serverName;
+  let paddingString;
+  let fieldName;
+
+  const fields = fieldString.split("/");
+  if (/^\d+$/.test(fields[0])) {
+    timestamp = fields.shift();
+  }
+  fields.forEach((field, i) => {
+    if (i % 2 === 0) {
+      fieldName = field;
+    } else {
+      switch (fieldName) {
+        case "t":
+          timestamp = field;
+          break;
+        case "padding":
+          paddingString = field;
+          break;
+        case "serverName":
+          serverName = field;
+          break;
+      }
+    }
+  });
+
+  if (req.query.serverName) {
+    // Allow query params to override path fields.
+    serverName = req.query.serverName;
+  }
+  if (req.query.padding) {
+    paddingString = req.query.padding;
+  }
+  if (req.query.t) {
+    timestamp = req.query.t;
+  }
 
   try {
     const { server, buffer } = await getServerSnapshot({
@@ -146,7 +182,6 @@ app.get("/:timestamp/image.png", async (req, res) => {
       timestamp,
     });
     res.set("Content-Type", fileType);
-    res.set("Content-Disposition", 'attachment; filename="t2-server.png"');
     res.set("Server-Player-Count", server.playerCount);
     res.send(buffer);
   } catch (err) {
