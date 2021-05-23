@@ -135,6 +135,26 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.get("/:timestamp/image.png", async (req, res) => {
+  const { timestamp } = req.params;
+  const { serverName, padding: paddingString } = req.query;
+
+  try {
+    const { server, buffer } = await getServerSnapshot({
+      serverName,
+      paddingString,
+      timestamp,
+    });
+    res.set("Content-Type", fileType);
+    res.set("Server-Player-Count", server.playerCount);
+    res.send(buffer);
+  } catch (err) {
+    res.set("Content-Type", "text/plain");
+    res.status(500);
+    res.send(err.toString());
+  }
+});
+
 app.get("/font-test", (req, res) => {
   try {
     const canvas = drawFontTest();
