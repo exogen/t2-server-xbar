@@ -146,6 +146,7 @@ app.get("/:timestamp/image.png", async (req, res) => {
       timestamp,
     });
     res.set("Content-Type", fileType);
+    res.set("Content-Disposition", 'attachment; filename="t2-server.png"');
     res.set("Server-Player-Count", server.playerCount);
     res.send(buffer);
   } catch (err) {
