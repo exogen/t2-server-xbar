@@ -146,11 +146,13 @@ function drawImage(
     ctx.textAlign = "left";
     ctx.font = '24px "xbar SF"';
     ctx.fillStyle = "#24ff8a";
-    if (leftTeam && leftTeam.name) {
-      ctx.fillText(leftTeam.name, leftColumn, bodyTop);
-    }
-    if (rightTeam && rightTeam.name) {
-      ctx.fillText(rightTeam.name, rightColumn, bodyTop);
+    if (teamsHeight) {
+      if (leftTeam && leftTeam.name) {
+        ctx.fillText(leftTeam.name, leftColumn, bodyTop);
+      }
+      if (rightTeam && rightTeam.name) {
+        ctx.fillText(rightTeam.name, rightColumn, bodyTop);
+      }
     }
     if (server.observerCount > 0) {
       ctx.fillText("Observers", leftColumn, observersTop);
@@ -159,11 +161,13 @@ function drawImage(
     ctx.textAlign = "right";
     ctx.font = '22px "xbar SF Display"';
     ctx.fillStyle = "#fffa17";
-    if (leftTeam && leftTeam.name) {
-      ctx.fillText(leftTeam.score, leftScoreColumn, bodyTop);
-    }
-    if (rightTeam && rightTeam.name) {
-      ctx.fillText(rightTeam.score, rightScoreColumn, bodyTop);
+    if (teamsHeight) {
+      if (leftTeam && leftTeam.name) {
+        ctx.fillText(leftTeam.score, leftScoreColumn, bodyTop);
+      }
+      if (rightTeam && rightTeam.name) {
+        ctx.fillText(rightTeam.score, rightScoreColumn, bodyTop);
+      }
     }
 
     ctx.textAlign = "left";
