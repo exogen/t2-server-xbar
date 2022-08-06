@@ -6,10 +6,15 @@ const { run } = require("./xbar");
 
 const args = process.argv.slice(2);
 const command = args[0];
+const pluginDir = args[1] || path.join(
+  process.env.HOME,
+  "Library/Application Support/xbar/plugins"
+);
+const prologue = args[2] || '';
 const scriptContent =
   command === "dev"
     ? `NODE_ENV=development node "${__filename}"`
-    : "npx t2-server-xbar";
+    : `npx t2-server-xbar`;
 
 const bashScript = `#!/bin/bash
 
@@ -26,17 +31,19 @@ const bashScript = `#!/bin/bash
 
 export PATH='/usr/local/bin:/usr/bin:/bin:$PATH'
 
+${prologue}
+
 ${scriptContent}
 `;
 
 if (command === "install" || command === "dev") {
-  const pluginDir = path.join(
-    process.env.HOME,
-    "Library/Application Support/xbar/plugins"
-  );
   const pluginFile = path.join(pluginDir, "t2-server.5m.sh");
   console.log(`Installing to: ${pluginFile}`);
-  fs.unlinkSync(pluginFile);
+  try {
+    fs.unlinkSync(pluginFile);
+  } catch (err) {
+    // It's fine.
+  }
   try {
     fs.writeFileSync(pluginFile, bashScript, {
       encoding: "utf8",

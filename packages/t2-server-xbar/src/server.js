@@ -54,7 +54,7 @@ async function fetchServerStatus(regexString = defaultServerName) {
   };
 }
 
-const defaultServerName = "^(Discord PUB|TacoServer Dev)$";
+const defaultServerName = "^Discord PUB";
 
 async function fetchServerImage(regexString = defaultServerName) {
   const url =
