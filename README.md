@@ -12,12 +12,18 @@ macOS xbar plugin for showing Tribes 2 server status.
 
 ## Install
 
-First, install [xbar](https://xbarapp.com).
+First, install [xbar](https://xbarapp.com) or [SwiftBar](https://swiftbar.app).
 
 Then run:
 
 ```console
 $ npx t2-server-xbar install
+```
+
+If using SwiftBar, you also need to supply the path to your SwiftBar plugins directory, since there is no default. Like so:
+
+```console
+$ npx t2-server-xbar install /path/to/plugins/dir
 ```
 
 ## Development
