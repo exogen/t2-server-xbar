@@ -60,7 +60,7 @@ async function fetchServerImage(regexString = defaultServerName) {
   const url =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000/"
-      : "https://t2-server-xbar.herokuapp.com/";
+      : "https://t2-server.fly.dev/";
 
   const response = await got(url, {
     responseType: "json",
