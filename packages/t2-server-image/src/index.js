@@ -107,7 +107,7 @@ async function getServerSnapshot({
   return snapshotPromise;
 }
 
-app.get("/", async (req, res) => {
+app.get(["/", "/image.png"], async (req, res) => {
   const { serverName, padding: paddingString, t: timestamp } = req.query;
   const responseType =
     req.headers.accept === "application/json" ? "application/json" : fileType;
